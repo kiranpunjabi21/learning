@@ -1,0 +1,35 @@
+#Your workflow name
+name : Deploy to Heroku
+
+#Run workflow on every push to main branch
+on:
+  push:
+    branches: [main]
+
+
+#Your workflow jobs
+jobs:
+  build:
+   runs on:ubuntu-latest
+   steps:
+     - name: Checkout
+       uses: actions/checkout@
+       
+
+
+       name: Build , Push & Release Docker container to Heroku
+       uses: gonuit/streamlit-docker-deploy@v1.3.3 #github action name
+       with:
+            email: {{secrets.STEAMLIT_EMAIL}}
+            
+            streamlit_app_name : {{secrets.STREAMLIT_APP_NAME}}
+
+            #Optional,default: './'
+            dockerfile_directory: ./
+            dockerfile_name: Dockerfile
+
+            #Additional options for docker build command
+            docker_options: "--no-cache"
+
+            #Select process type for which you want to run docker container to be uploaded
+            process_type: web
